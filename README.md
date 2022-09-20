@@ -4,7 +4,7 @@
 # 验证码 依赖安装
 composer require firecms-ext/verification-code
 # 发布配置
-php bin/hyperf.php vendor:publish firecms-ext/verification_code
+php bin/hyperf.php vendor:publish firecms-ext/verification-code
 
 # 加密解密 依赖安装
 composer require firecms-ext/crypt
