@@ -44,7 +44,7 @@ class VerificationCodeService implements VerificationCodeServiceInterface
      */
     public function __construct(protected ConfigInterface $config, protected CacheInterface $cache)
     {
-        foreach ((array) $config->get('captcha') as $key => $value) {
+        foreach ((array) $config->get('verification_code') as $key => $value) {
             if (property_exists($this, $key)) {
                 $this->{$key} = $value;
             }
@@ -90,6 +90,11 @@ class VerificationCodeService implements VerificationCodeServiceInterface
      */
     public function check(string $code, string $key): bool
     {
+        // 不启用直接跳过
+        if (! $this->config->get('verification_code.enable', true)) {
+            return true;
+        }
+
         $data = decrypt($key);
         $code = mb_strtolower($code, 'UTF-8');
 
@@ -109,6 +114,7 @@ class VerificationCodeService implements VerificationCodeServiceInterface
                 $this->cache->set($cache_key, $ttl, $ttl);
             }
         }
+
         return password_verify(
             mb_strtolower($code, 'UTF-8'),
             $data['hash']
