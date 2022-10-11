@@ -13,6 +13,7 @@ namespace FirecmsExt\VerificationCode\Listeners;
 
 use FirecmsExt\VerificationCode\Contracts\VerificationCodeServiceInterface;
 use Hyperf\Event\Contract\ListenerInterface;
+use Hyperf\Utils\ApplicationContext;
 use Hyperf\Validation\Contract\ValidatorFactoryInterface;
 use Hyperf\Validation\Event\ValidatorFactoryResolved;
 use Hyperf\Validation\Validator;
@@ -36,7 +37,7 @@ class ValidatorFactoryResolvedListener implements ListenerInterface
 
             $key = reset($parameters);
             $key = $key ?: rtrim($attribute, '_code') . '_key';
-            return make(VerificationCodeServiceInterface::class)
+            return ApplicationContext::getContainer()->get(VerificationCodeServiceInterface::class)
                 ->check($value, $validator->getData()[$key]);
         });
 
