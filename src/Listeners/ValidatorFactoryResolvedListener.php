@@ -11,6 +11,7 @@ declare(strict_types=1);
  */
 namespace FirecmsExt\VerificationCode\Listeners;
 
+use FirecmsExt\Captcha\Contracts\CaptchaServiceInterface;
 use FirecmsExt\VerificationCode\Contracts\VerificationCodeServiceInterface;
 use Hyperf\Event\Contract\ListenerInterface;
 use Hyperf\Utils\ApplicationContext;
@@ -37,8 +38,16 @@ class ValidatorFactoryResolvedListener implements ListenerInterface
 
             $key = reset($parameters);
             $key = $key ?: rtrim($attribute, '_code') . '_key';
-            return ApplicationContext::getContainer()->get(VerificationCodeServiceInterface::class)
-                ->check($value, $validator->getData()[$key]);
+            try {
+                return ApplicationContext::getContainer()
+                    ->get(VerificationCodeServiceInterface::class)
+                    ->check($value, $validator->getData()[$key]);
+            } catch (\Exception $e) {
+                $validator->setCustomMessages([
+                    'captcha' => __('message.' . $e->getMessage()),
+                ]);
+            }
+            return false;
         });
 
         $validatorFactory->replacer('code', function ($message, $attribute, $rule, $parameters) {
