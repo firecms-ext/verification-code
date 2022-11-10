@@ -44,7 +44,7 @@ class ValidatorFactoryResolvedListener implements ListenerInterface
                     ->check($value, $validator->getData()[$key]);
             } catch (\Exception $e) {
                 $validator->setCustomMessages([
-                    'captcha' => __('message.' . $e->getMessage()),
+                    'code' => __('message.' . $e->getMessage()),
                 ]);
             }
             return false;
