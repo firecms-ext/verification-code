@@ -11,7 +11,6 @@ declare(strict_types=1);
  */
 namespace FirecmsExt\VerificationCode\Listeners;
 
-use FirecmsExt\Captcha\Contracts\CaptchaServiceInterface;
 use FirecmsExt\VerificationCode\Contracts\VerificationCodeServiceInterface;
 use Hyperf\Event\Contract\ListenerInterface;
 use Hyperf\Utils\ApplicationContext;
