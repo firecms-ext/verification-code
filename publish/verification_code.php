@@ -11,7 +11,7 @@ declare(strict_types=1);
  */
 return [
     // 是否启用验证
-    'enable' => true,
+    'enable' => (bool) env('CAPTCHA_ENABLE', true),
     // 验证码位数
     'length' => 5,
     // 验证码字符集合
